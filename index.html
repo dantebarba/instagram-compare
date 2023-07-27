@@ -6,22 +6,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Custom CSS for the app -->
     <style>
-        .thumbnail {
-            width: 100px;
-            height: 100px;
-            overflow: hidden;
-            border-radius: 50%;
+        .message-container {
+            padding: 16px;
+            text-align: center;
         }
-        .thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .result-table {
+            margin-top: 16px;
         }
     </style>
 </head>
 <body>
     <div id="app" class="container">
-        <h1>JSON File Comparator</h1>
+        <h1 class="center-align">JSON File Comparator</h1>
         <div class="file-field input-field">
             <div class="btn">
                 <span>Select source JSON file</span>
@@ -43,29 +39,28 @@
         <button class="btn waves-effect waves-light" @click="compareFiles">Compare</button>
 
         <div v-if="comparisonResult.length">
-            <h2>Comparison Result</h2>
-            <table class="striped">
+            <h2 class="center-align">Comparison Result</h2>
+            <table class="highlight responsive-table result-table">
                 <thead>
                     <tr>
-                        <th>Profile Picture</th>
                         <th>Username</th>
                         <th>Full Name</th>
-                        <th>Profile Pic URL</th>
                         <!-- Add other keys from your JSON if needed -->
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="entry in comparisonResult" :key="entry.username">
-                        <td class="thumbnail">
-                            <img :src="entry.profile_pic_url" alt="Profile Pic">
-                        </td>
                         <td>{{ entry.username }}</td>
                         <td>{{ entry.full_name }}</td>
-                        <td>{{ entry.profile_pic_url }}</td>
                         <!-- Add other keys from your JSON if needed -->
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div v-else>
+            <div class="message-container">
+                <p>No results found. Please upload valid JSON files and click "Compare".</p>
+            </div>
         </div>
     </div>
 
