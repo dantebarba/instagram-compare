@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON File Comparator</title>
+    <!-- Add Materialize CSS CDN link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+    <div id="app" class="container">
+        <h1>JSON File Comparator</h1>
+        <input type="file" ref="sourceFileInput" @change="handleSourceFile" required><br>
+        <input type="file" ref="compareFileInput" @change="handleCompareFile" required><br>
+        <button @click="compareFiles">Compare</button>
+
+        <div v-if="comparisonResult.length">
+            <h2>Comparison Result</h2>
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Profile Pic URL</th>
+                        <!-- Add other keys from your JSON if needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="entry in comparisonResult" :key="entry.username">
+                        <td>{{ entry.username }}</td>
+                        <td>{{ entry.full_name }}</td>
+                        <td>{{ entry.profile_pic_url }}</td>
+                        <!-- Add other keys from your JSON if needed -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Vue.js CDN link -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- Add Materialize JS CDN link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                sourceData: null,
+                compareData: null,
+                comparisonResult: []
+            },
+            methods: {
+                handleSourceFile(event) {
+                    this.sourceData = event.target.files[0];
+                },
+                handleCompareFile(event) {
+                    this.compareData = event.target.files[0];
+                },
+                compareFiles() {
+                    if (!this.sourceData || !this.compareData) {
+                        alert('Please select both source and compare JSON files.');
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const sourceJson = JSON.parse(reader.result);
+
+                        const compareReader = new FileReader();
+                        compareReader.onload = () => {
+                            const compareJson = JSON.parse(compareReader.result);
+
+                            // Perform the comparison
+                            this.comparisonResult = this.compareJson(sourceJson, compareJson);
+                        };
+
+                        compareReader.readAsText(this.compareData);
+                    };
+
+                    reader.readAsText(this.sourceData);
+                },
+                compareJson(sourceData, compareData) {
+                    const sourceDict = {};
+                    sourceData.forEach(entry => sourceDict[entry.username] = entry);
+
+                    return compareData.filter(entry => !(entry.username in sourceDict));
+                }
+            }
+        });
+    </script>
+</body>
+</html>
