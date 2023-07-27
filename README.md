@@ -3,6 +3,6 @@ Compare two jsons produced by my gist
 
 ## Usage
 
-```python
+```bash
 python compare_json.py source_file.json compare_file.json
 ```
