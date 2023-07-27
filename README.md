@@ -1,5 +1,5 @@
 # instagram-compare
-Compare two jsons produced by my gist
+Compare two jsons produced by my gist https://gist.github.com/dantebarba/d1bedb40fc464f9a10617ec11e2aefd9
 
 ## Usage
 
