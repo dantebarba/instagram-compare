@@ -1,5 +1,5 @@
 import json
-import sys
+import argparse
 
 def compare_json(source, compare):
     # Load JSON data from files
@@ -16,14 +16,16 @@ def compare_json(source, compare):
     
     return result_data
 
+def main():
+    parser = argparse.ArgumentParser(description="Compare two JSON files based on the 'username' key.")
+    parser.add_argument("source", help="Path to the source JSON file.")
+    parser.add_argument("compare", help="Path to the compare JSON file.")
+    args = parser.parse_args()
+
+    result = compare_json(args.source, args.compare)
+
+    # Print the result as formatted JSON
+    print(json.dumps(result, indent=4))
+
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python script.py source_file.json compare_file.json")
-    else:
-        source_file = sys.argv[1]
-        compare_file = sys.argv[2]
-        
-        result = compare_json(source_file, compare_file)
-        
-        # Print the result as formatted JSON
-        print(json.dumps(result, indent=4))
+    main()
